@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro-Calculus: Post-Harvest Durian Ripening Kinetics</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for agro-product icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glow-gold {
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.25);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Academic/Institutional Header -->
+    <header class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-amber-900 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white/10 p-2.5 rounded-xl border border-white/20 text-amber-300">
+                    <i class="fa-solid fa-mortar-pestle text-2xl animate-bounce"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight">Post-Harvest Technology Lab</h1>
+                    <p class="text-xs text-amber-200 uppercase tracking-widest font-semibold">SFP: Agro Product Technology | Malaysia</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="bg-amber-500/20 border border-amber-500/40 px-3 py-1.5 rounded-full text-xs font-medium text-amber-200 flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-amber-400 animate-ping"></span>
+                    Export Preservation Standard
+                </span>
+                <span class="text-xs text-stone-200 hidden sm:inline">Module Reference: SFP-3023 / SFP-4102</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Math Explainer & Malaysian Context -->
+        <section class="lg:col-span-4 flex flex-col gap-6">
+            <!-- Bioscience Scenario Intro Card -->
+            <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-2 text-emerald-800 mb-3">
+                    <i class="fa-solid fa-seedling text-lg"></i>
+                    <h2 class="font-bold text-lg">The Ripening Challenge</h2>
+                </div>
+                <h3 class="font-bold text-amber-700 text-md mb-2">Musang King (D197) Starch-to-Sugar Ripening Kinetics</h3>
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                    Musang King durians are harvested strictly upon natural drop. Once dropped, metabolic respiration surges. Alpha-amylase enzymes rapidly hydrolyze insoluble starches into soluble reducing sugars (sucrose, fructose, and glucose), measured in <strong>degrees Brix (°Brix)</strong>.
+                </p>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    By calculating the <strong>first derivative $f'(x)$</strong>, agro-product technologists pinpoint the precise inflection point of peak enzymatic conversion. This marks the brief golden hour for cryogenic nitrogen freezing (-196°C) to prevent over-fermentation and preserve organic volatiles for export.
+                </p>
+                
+                <div class="mt-4 pt-4 border-t border-dashed border-slate-200">
+                    <span class="text-xs font-semibold text-slate-500 uppercase block mb-1">Empirical Standards & Frameworks</span>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="https://www.fama.gov.my" target="_blank" class="text-emerald-700 hover:text-emerald-800 hover:underline text-xs flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> FAMA Standard: Premium Export Quality D197
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.mardi.gov.my" target="_blank" class="text-emerald-700 hover:text-emerald-800 hover:underline text-xs flex items-center gap-1">
+                                <i class="fa-solid fa-flask"></i> MARDI Postharvest Biology Series No. 24
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Mathematical Modeling Card -->
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-2xl shadow-lg border border-slate-700">
+                <div class="flex items-center space-x-2 text-amber-400 mb-4">
+                    <i class="fa-solid fa-square-root-variable text-lg"></i>
+                    <h2 class="font-bold text-lg">The Mathematical Model</h2>
+                </div>
+                
+                <div class="space-y-5">
+                    <!-- Sugar Accumulation Function f(x) -->
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Soluble Sugar Content: $f(x)$</span>
+                        <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 font-mono text-sm flex justify-between items-center">
+                            <span class="text-amber-300 font-semibold">f(x) = -0.1x³ + 0.9x² + 2x + 10</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Outputs pulp sugar concentration in <strong>°Brix</strong>, where <strong class="text-slate-200">x</strong> represents days post-harvest ($0 \le x \le 7$).
+                        </p>
+                    </div>
+
+                    <!-- Derivative f'(x) -->
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Instantaneous Conversion Rate: $f'(x)$</span>
+                        <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 font-mono text-sm flex justify-between items-center">
+                            <span class="text-emerald-400 font-semibold">f'(x) = -0.3x² + 1.8x + 2</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Derived via the <strong>Power Rule</strong>. Represents conversion rate in <strong class="text-slate-200">°Brix per day</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Calculus Proof Guide -->
+                    <div class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-700">
+                        <span class="font-semibold text-amber-400 uppercase block">Step-By-Step Derivation:</span>
+                        <div class="font-mono bg-slate-800/40 p-2.5 rounded border border-slate-700/50 space-y-1 text-[11px]">
+                            <div>f'(x) = d/dx [-0.1x³ + 0.9x² + 2x + 10]</div>
+                            <div>= (-0.1 × 3x²) + (0.9 × 2x) + (2 × 1) + 0</div>
+                            <div>= -0.3x² + 1.8x + 2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Chart & Interactive Exploration -->
+        <section class="lg:col-span-8 flex flex-col gap-6">
+            
+            <!-- Main Simulator Canvas Card -->
+            <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                    <div>
+                        <h2 class="font-bold text-xl text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-amber-500"></i>
+                            D197 Ripening Profile & Tangent Visualizer
+                        </h2>
+                        <p class="text-xs text-slate-500">Click anywhere on the curve or drag the timeline slider to evaluate derivative rates.</p>
+                    </div>
+                    
+                    <!-- Toggle/Interactive Info -->
+                    <div class="flex items-center gap-2 bg-stone-100 p-1 rounded-lg text-xs">
+                        <button id="btnPlay" class="px-3 py-1 bg-amber-600 text-white rounded-md font-medium shadow-sm hover:bg-amber-700 transition flex items-center gap-1">
+                            <i class="fa-solid fa-play"></i> Auto-Play Kinetics
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chart.js Wrapper -->
+                <div class="relative w-full h-[320px] md:h-[400px] mb-6 bg-stone-50/50 rounded-xl p-2 border border-stone-100">
+                    <canvas id="ripeningChart"></canvas>
+                </div>
+
+                <!-- Interactive Slider Control -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-sm font-semibold">
+                        <span class="text-slate-600">Adjust Days Post-Harvest ($x$):</span>
+                        <span class="bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full text-xs font-bold" id="sliderValDisplay">Day 3.0</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-bold text-slate-400">Day 0 (Harvest)</span>
+                        <input type="range" id="daySlider" min="0" max="7" step="0.05" value="3.0" class="w-full accent-amber-600 h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer">
+                        <span class="text-xs font-bold text-slate-400">Day 7 (Overripe)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-Time Analytical & Agricultural Interpretation Panel -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <!-- Mathematical Output Dashboard (5 cols) -->
+                <div class="md:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-4 border-b pb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-square-poll-vertical text-amber-600"></i> Calculus Output
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Day Output -->
+                            <div class="flex justify-between items-center bg-stone-50 p-2.5 rounded-xl border border-stone-100">
+                                <span class="text-xs text-slate-500 font-medium">Selected Epoch ($x_0$):</span>
+                                <span class="font-bold text-slate-800" id="calcDay">Day 3.00</span>
+                            </div>
+
+                            <!-- Sugar Level Output -->
+                            <div class="flex justify-between items-center bg-stone-50 p-2.5 rounded-xl border border-stone-100">
+                                <span class="text-xs text-slate-500 font-medium">Sugar Conc. ($f(x)$):</span>
+                                <span class="font-bold text-emerald-800" id="calcBrix">21.40 °Brix</span>
+                            </div>
+
+                            <!-- Conversion Rate Output -->
+                            <div class="flex justify-between items-center bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                                <span class="text-xs text-amber-800 font-semibold">Conversion Rate ($f'(x)$):</span>
+                                <span class="font-extrabold text-amber-600 animate-pulse" id="calcRate">+4.70 °Brix/day</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instant mathematical interpretation -->
+                    <div class="mt-4 pt-4 border-t border-slate-100 text-[11px] text-slate-500 italic">
+                        The derivative $f'(x)$ represents the exact slope of the tangent line drawn at this precise time coordinate.
+                    </div>
+                </div>
+
+                <!-- Agricultural Interpretation Card (7 cols) -->
+                <div class="md:col-span-7 bg-gradient-to-br from-amber-50/50 to-emerald-50/50 border border-emerald-100/50 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-emerald-900 text-xs uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-microscope"></i> 
+                            Biochemical Interpretation
+                        </h3>
+                        
+                        <!-- Status indicator bar -->
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4" id="bioStatusBadge">
+                            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+                            ACTIVE EXPANSION
+                        </div>
+
+                        <!-- Main explanation statement -->
+                        <p class="text-sm text-slate-700 leading-relaxed font-medium" id="agriculturalExplanation">
+                            Loading biological analysis...
+                        </p>
+                    </div>
+
+                    <!-- Actionable Farm Management Recommendation -->
+                    <div class="mt-5 p-3.5 bg-white/95 rounded-xl border border-amber-100 text-xs text-slate-700 shadow-sm">
+                        <span class="font-bold text-emerald-800 uppercase block mb-1">
+                            <i class="fa-solid fa-truck-ramp-box"></i> Food Processing Action Plan:
+                        </span>
+                        <span id="agriculturalRecommendation">Loading recommendation...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Study Guide -->
+            <div class="glass-panel p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 text-md mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-indigo-600"></i>
+                    Study Guide: Post-Harvest Processing Mathematics
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600 leading-relaxed">
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                        <strong class="text-slate-800 block mb-1">1. Locating Peak Amylase Velocity</strong>
+                        The second derivative $f''(x) = -0.6x + 1.8$ equals zero when $x = 3.0$ days. This mathematically proves the inflection point of $f(x)$—the absolute peak rate of sugar generation.
+                    </div>
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                        <strong class="text-slate-800 block mb-1">2. Nitrogen Cryo-Freezing</strong>
+                        When the derivative starts dropping drastically past day 5, the pulp is soft. Cryo-freezers are run *before* the sugar conversion drops to negative values to lock in peak organoleptic compounds.
+                    </div>
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                        <strong class="text-slate-800 block mb-1">3. Alcohol Fermentation Prevention</strong>
+                        At day 7, the derivative turns negative ($f'(7) < 0$). This occurs as wild yeasts consume sucrose, fermenting it into ethanol and organic acids, reducing edible quality.
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>Developed for the Faculty of Agro-Based Industry (FIAT), Malaysia | Post-Harvest Sugar Kinetics Core Module</p>
+            <p class="text-slate-600">Model generated based on average laboratory studies of D197 durian cultivars harvested at fully mature drops under ambient conditions (28°C, 80% RH).</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Mathematical Formula Setup ---
+        // f(x) = -0.1x³ + 0.9x² + 2x + 10
+        function getBrix(x) {
+            return -0.1 * Math.pow(x, 3) + 0.9 * Math.pow(x, 2) + 2 * x + 10;
+        }
+
+        // f'(x) = -0.3x² + 1.8x + 2
+        function getConversionRate(x) {
+            return -0.3 * Math.pow(x, 2) + 1.8 * x + 2;
+        }
+
+        // Calculate tangent coordinates for drawing a line segment on chart around point x0
+        // Line formula: y = f'(x0) * (x - x0) + f(x0)
+        function getTangentPoints(x0) {
+            const range = 1.2; // span of the tangent line segment
+            const xStart = Math.max(0, x0 - range);
+            const xEnd = Math.min(7, x0 + range);
+            
+            const rate = getConversionRate(x0);
+            const brix = getBrix(x0);
+
+            const yStart = rate * (xStart - x0) + brix;
+            const yEnd = rate * (xEnd - x0) + brix;
+
+            return [
+                { x: xStart, y: yStart },
+                { x: xEnd, y: yEnd }
+            ];
+        }
+
+        // --- Biological Interpretations for Ripening Phases ---
+        function getBiologicalDetails(x, rate) {
+            if (x < 1.5) {
+                return {
+                    status: "PRE-CLIMACTERIC INCEPTION",
+                    color: "bg-blue-100 text-blue-800 border-blue-200",
+                    indicatorColor: "bg-blue-500",
+                    explanation: "Just dropped from the tree. Respiration rates are starting to climb. Instantaneous sugar conversion f'(x) is moderate (~" + rate.toFixed(2) + " °Brix/day) as endogenous starch breakdown initiates under early ethylene signals.",
+                    recommendation: "Durians should be sorted immediately. Prep the sorting floor with cross-ventilation. Avoid stack-packing to prevent anaerobic suffocation."
+                };
+            } else if (x >= 1.5 && x < 4.5) {
+                return {
+                    status: "CLIMACTERIC PEAK",
+                    color: "bg-amber-100 text-amber-800 border-amber-200",
+                    indicatorColor: "bg-amber-500",
+                    explanation: "Enzymatic hydrolysis of starch is at its absolute peak velocity! The derivative f'(x) is hitting its maximum rate around Day 3. At day " + x.toFixed(1) + ", sugars are accumulating incredibly fast. Highly volatile sulfur esters are releasing.",
+                    recommendation: "GOLDEN WINDOW! Initiate cryo-freezing procedures at -196°C using liquid nitrogen within this high-rate window to trap the custard texture and peak sweetness for global cold chain export."
+                };
+            } else if (x >= 4.5 && x < 6.2) {
+                return {
+                    status: "OPTIMAL EATING EXCELLENCE",
+                    color: "bg-emerald-100 text-emerald-800 border-emerald-200",
+                    indicatorColor: "bg-emerald-500",
+                    explanation: "Total soluble solids (SSC) are nearing their peak of over 30°Brix. The first derivative is beginning to slow down ($f'(x) \\approx$ " + rate.toFixed(2) + " °Brix/day), meaning most available complex starches have been successfully degraded.",
+                    recommendation: "Peak quality for immediate local retail consumption. If exporting fresh, maintain strict refrigerated cold storage (13-15°C) to slow the remaining metabolism down."
+                };
+            } else {
+                return {
+                    status: "SENESCENCE & FERMENTATION",
+                    color: "bg-rose-100 text-rose-800 border-rose-200",
+                    indicatorColor: "bg-rose-500",
+                    explanation: "The derivative f'(x) has turned negative (" + rate.toFixed(2) + " °Brix/day). Soluble sugars are now being actively metabolized by wild yeasts and pathogens, converting them to alcohol. Shell begins dehiscing (splitting).",
+                    recommendation: "Unsuitable for export. Reject from high-tier fresh distribution channels. Salvage pulp immediately for downstream value-added processing (e.g., Tempoyak fermentation, durian paste, or confectionery fillings)."
+                };
+            }
+        }
+
+        // --- STREAMING_CHUNK: Setting up the Chart.js visual configuration and updates... ---
+        let ripeningChart;
+        const totalDays = 7;
+        const dataX = [];
+        const dataY = [];
+
+        // Generate baseline curve data
+        for (let i = 0; i <= totalDays; i += 0.1) {
+            dataX.push(Number(i.toFixed(1)));
+            dataY.push(getBrix(i));
+        }
+
+        // Initialize variables
+        let activeDay = 3.0;
+        let playInterval = null;
+
+        // Populate and update dashboard values dynamically
+        function updateDashboard(x) {
+            const brix = getBrix(x);
+            const rate = getConversionRate(x);
+            const bio = getBiologicalDetails(x, rate);
+
+            // Update DOM Texts
+            document.getElementById("sliderValDisplay").textContent = "Day " + x.toFixed(2);
+            document.getElementById("calcDay").textContent = "Day " + x.toFixed(2);
+            document.getElementById("calcBrix").textContent = brix.toFixed(2) + " °Brix";
+            document.getElementById("calcRate").textContent = (rate >= 0 ? "+" : "") + rate.toFixed(2) + " °Brix/day";
+            
+            // Update Biological Explanation
+            document.getElementById("agriculturalExplanation").textContent = bio.explanation;
+            document.getElementById("agriculturalRecommendation").textContent = bio.recommendation;
+
+            // Update Badge classes
+            const badge = document.getElementById("bioStatusBadge");
+            badge.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4 " + bio.color;
+            badge.innerHTML = `<span class="h-2 w-2 rounded-full ${bio.indicatorColor} animate-pulse"></span> ${bio.status}`;
+
+            // Update slider position if updated programmatically
+            document.getElementById("daySlider").value = x;
+
+            // Update Chart datasets
+            const tangentLine = getTangentPoints(x);
+            ripeningChart.data.datasets[1].data = tangentLine; // Tangent line dataset
+            ripeningChart.data.datasets[2].data = [{ x: x, y: brix }]; // Active Point dataset
+            ripeningChart.update('none'); // fast update without reset animations
+        }
+
+        // --- STREAMING_CHUNK: Rendering Chart.js instance with responsive parameters... ---
+        window.onload = function() {
+            const ctx = document.getElementById('ripeningChart').getContext('2d');
+            
+            ripeningChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dataX,
+                    datasets: [
+                        {
+                            label: 'Pulp Soluble Sugars (f(x) in °Brix)',
+                            data: dataY,
+                            borderColor: 'rgb(217, 119, 6)',
+                            borderWidth: 3.5,
+                            fill: false,
+                            tension: 0.2,
+                            pointRadius: 0,
+                            pointHitRadius: 10
+                        },
+                        {
+                            label: 'Rate of Ripening f\'(x) (Tangent)',
+                            data: getTangentPoints(activeDay),
+                            borderColor: 'rgb(16, 185, 129)',
+                            borderWidth: 2.5,
+                            borderDash: [6, 4],
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Active Measurement Epoch',
+                            data: [{ x: activeDay, y: getBrix(activeDay) }],
+                            borderColor: 'rgb(16, 185, 129)',
+                            backgroundColor: 'rgb(16, 185, 129)',
+                            pointRadius: 8,
+                            pointHoverRadius: 10,
+                            showLine: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            min: 0,
+                            max: 7,
+                            title: {
+                                display: true,
+                                text: 'Days Post-Harvest (Time, x)',
+                                font: { size: 12, weight: 'bold' }
+                            },
+                            ticks: { stepSize: 1 }
+                        },
+                        y: {
+                            min: 0,
+                            max: 40,
+                            title: {
+                                display: true,
+                                text: 'Soluble Sugar Content (°Brix, y)',
+                                font: { size: 12, weight: 'bold' }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            enabled: false
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                boxWidth: 15,
+                                font: { size: 11 }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        const xVal = ripeningChart.scales.x.getValueForPixel(event.x);
+                        if (xVal >= 0 && xVal <= 7) {
+                            stopAutoplay();
+                            activeDay = Math.round(xVal * 20) / 20; // Snap to nearest step
+                            updateDashboard(activeDay);
+                        }
+                    }
+                }
+            });
+
+            // Initial UI Update
+            updateDashboard(activeDay);
+
+            // --- STREAMING_CHUNK: Hooking up user controls and automation mechanics... ---
+            // Slider Input Event
+            const slider = document.getElementById("daySlider");
+            slider.addEventListener("input", function() {
+                stopAutoplay();
+                activeDay = parseFloat(this.value);
+                updateDashboard(activeDay);
+            });
+
+            // Auto-Play Logic
+            const btnPlay = document.getElementById("btnPlay");
+            btnPlay.addEventListener("click", function() {
+                if (playInterval) {
+                    stopAutoplay();
+                } else {
+                    startAutoplay();
+                }
+            });
+
+            function startAutoplay() {
+                btnPlay.innerHTML = `<i class="fa-solid fa-pause"></i> Pause Kinetics`;
+                btnPlay.classList.replace("bg-amber-600", "bg-emerald-600");
+                btnPlay.classList.replace("hover:bg-amber-700", "hover:bg-emerald-700");
+                
+                playInterval = setInterval(() => {
+                    activeDay += 0.05;
+                    if (activeDay > 7) {
+                        activeDay = 0; // reset
+                    }
+                    updateDashboard(activeDay);
+                }, 80);
+            }
+
+            function stopAutoplay() {
+                if (playInterval) {
+                    clearInterval(playInterval);
+                    playInterval = null;
+                    btnPlay.innerHTML = `<i class="fa-solid fa-play"></i> Auto-Play Kinetics`;
+                    btnPlay.classList.replace("bg-emerald-600", "bg-amber-600");
+                    btnPlay.classList.replace("hover:bg-emerald-700", "hover:bg-amber-700");
+                }
+            }
+        }
+    </script>
+</body>
+</html>
